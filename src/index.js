@@ -4,6 +4,16 @@ import "./index.css";
 import App from "./App";
 import { Provider } from "react-redux";
 import { store } from "./features/store";
+//theme
+import "primereact/resources/themes/lara-light-indigo/theme.css";
+//core
+import "primereact/resources/primereact.min.css";
+//icons
+import "primeicons/primeicons.css";
+
+const value = {
+  appendTo: "self",
+};
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

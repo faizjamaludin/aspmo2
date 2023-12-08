@@ -25,7 +25,7 @@ function Projects() {
           </div>
           <p className="text-h2 text-gray-300">View and manage your project</p>
         </header>
-        <section className="mt-10">
+        <section className="mt-10 mr-10 border rounded-md">
           <DataTable data={project} columns={projectColumn} pagination />
         </section>
       </main>

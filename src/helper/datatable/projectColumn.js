@@ -2,11 +2,13 @@ import dateFormat from "dateformat";
 
 // icon
 import { HiBars3BottomLeft } from "react-icons/hi2";
-import { BiHourglass } from "react-icons/bi";
-import { BiCalendarAlt } from "react-icons/bi";
-import { BiCalendar } from "react-icons/bi";
-import { BiAlarm } from "react-icons/bi";
-import { BiFace } from "react-icons/bi";
+import {
+  BiHourglass,
+  BiCalendarAlt,
+  BiCalendar,
+  BiAlarm,
+  BiFace,
+} from "react-icons/bi";
 
 function NameCell({ row }) {
   console.log(row);
@@ -51,7 +53,7 @@ export const projectColumn = [
   {
     name: (
       <span className="flex flex-row justify-center items-center gap-x-2">
-        <HiBars3BottomLeft />
+        <HiBars3BottomLeft size="0.8rem" />
         Project Name
       </span>
     ),
@@ -63,7 +65,7 @@ export const projectColumn = [
   {
     name: (
       <span className="flex flex-row justify-center items-center gap-x-2">
-        <BiHourglass />
+        <BiHourglass size="0.8rem" />
         Status
       </span>
     ),
@@ -75,9 +77,9 @@ export const projectColumn = [
   },
   {
     name: (
-      <span className="flex flex-row justify-center items-center gap-x-2">
-        <BiCalendarAlt size="0.8rem" />
-        Plan Start
+      <span className="flex flex-row justify-center items-start gap-x-2">
+        <BiCalendarAlt size="1.2rem" />
+        Proposed Start
       </span>
     ),
     selector: (row) => dateFormat(row.startDate, "dd-mmm-yy"),
@@ -87,9 +89,9 @@ export const projectColumn = [
   },
   {
     name: (
-      <span className="flex flex-row justify-center items-center gap-x-2">
-        <BiCalendar size="0.8rem" />
-        Plan End
+      <span className="flex flex-row justify-center items-start gap-x-2">
+        <BiCalendar size="1.2rem" />
+        Proposed End
       </span>
     ),
     selector: (row) => dateFormat(row.endDate, "dd-mmm-yy"),
