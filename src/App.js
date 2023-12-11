@@ -1,5 +1,7 @@
 import React from "react";
 import { Dashboard, Projects, ProjectTask, TesPage } from "./pages";
+import "ag-grid-community/styles/ag-grid.css"; // Core CSS
+import "ag-grid-community/styles/ag-theme-quartz.css"; // Theme
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
