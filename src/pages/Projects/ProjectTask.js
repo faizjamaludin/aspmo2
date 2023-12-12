@@ -1,68 +1,14 @@
-import React from "react";
-import { Sidebar } from "../../component";
-import { DataTable, projectTaskColumn } from "../../helper";
+import React, { useState } from "react";
+import { DataTable, projectTaskColumn, ExpandedComponent } from "../../helper";
 import { useParams } from "react-router-dom";
 import { useGetTaskByProjectIdQuery } from "../../features/api/taskApi";
-import dateFormat from "dateformat";
 
-const DayDiff = ({ startDate, endDate }) => {
-  const start = startDate == null ? 0 : new Date(startDate);
-  const end = endDate == null ? 0 : new Date(endDate);
+// component
+import { Sidebar, AddTask } from "../../component";
 
-  console.log(end);
-  const timeDiff = end - start;
-  const daysDiff = timeDiff / (1000 * 3600 * 24);
-
-  return <p>{daysDiff}</p>;
-};
-
-const ExpandedComponent = ({ data }) => {
-  return (
-    <div>
-      {data.childTask?.map((item, index) => {
-        console.log(item);
-        return (
-          <div
-            key={index}
-            className="flex flex-row w-full border-b border-gray-200 h-[2.5rem] items-center pl-[2rem] text-[0.75rem]"
-          >
-            <p className="w-[20rem] ">{item.taskName}</p>
-            <p className="w-[10rem] pl-[3.5rem]">
-              {item.turnaroundDays == null ? "0" : item.turnaroundDays}
-            </p>
-            <p className="w-[10rem] pl-[3.5rem]">
-              {item.totalTurnaroundDays == null
-                ? "0"
-                : item.totalTurnaroundDays}
-            </p>
-            <p className="w-[8rem]">
-              {dateFormat(item.plannedStartDate, "dd-mmm-yy")}
-            </p>
-            <p className="w-[8rem]">
-              {dateFormat(item.plannedEndDate, "dd-mmm-yy")}
-            </p>
-            <p className="w-[10rem] pl-[2.8rem]">
-              {
-                <DayDiff
-                  startDate={item.plannedStartDate}
-                  endDate={item.plannedEndDate}
-                />
-              }
-            </p>
-            <p className="w-[8rem]">
-              {dateFormat(item.startDate, "dd-mmm-yy")}
-            </p>
-            <p className="w-[8rem]">{dateFormat(item.endDate, "dd-mmm-yy")}</p>
-            <p className="w-[10rem] pl-[2rem]">
-              {<DayDiff startDate={item.startDate} endDate={item.endDate} />}
-            </p>
-            <p className="w-[8rem] pl-[1rem]">{item.dayElapsed}</p>
-          </div>
-        );
-      })}
-    </div>
-  );
-};
+// icon
+import { BiPlus } from "react-icons/bi";
+import { MdDownload } from "react-icons/md";
 
 function ProjectTask() {
   const { projectId } = useParams();
@@ -71,6 +17,8 @@ function ProjectTask() {
     error,
     isLoading,
   } = useGetTaskByProjectIdQuery(projectId);
+
+  const [openAdd, setOpenAdd] = useState(false);
 
   return (
     <div className="flex flex-row w-full">
@@ -87,17 +35,43 @@ function ProjectTask() {
             <p className="text-h2 text-gray-300">View and manage your task</p>
           </div>
         </header>
-        <section className="mt-10 mr-10 border rounded-md">
-          <DataTable
-            data={task}
-            columns={projectTaskColumn}
-            expandableRows
-            expandableRowDisabled={(row) => (row.childTask ? false : true)}
-            expandOnRowClicked
-            expandableRowsHideExpander
-            expandableRowsComponent={ExpandedComponent}
-            pagination
-          />
+        <section className="mt-10 mr-10">
+          <div className="flex flex-row justify-between mb-3">
+            <div className="flex flex-row">
+              <button
+                className="flex flex-row items-center w-fit px-2 py-1 gap-x-2 rounded-sm hover:bg-purple-100"
+                onClick={() => setOpenAdd(true)}
+              >
+                <BiPlus /> <p className="text-[0.75rem]">Create</p>
+              </button>
+              <button className="flex flex-row items-center w-fit px-2 py-1 gap-x-2 rounded-sm hover:bg-purple-100">
+                <MdDownload />
+                <p className="text-[0.75rem]">Download</p>
+              </button>
+            </div>
+            <div>
+              <input
+                type="text"
+                placeholder="Search Task"
+                className="border rounded-sm px-2 py-1 text-h2 w-[15rem]"
+              />
+            </div>
+          </div>
+          <div className="border rounded-md">
+            <DataTable
+              data={task}
+              columns={projectTaskColumn}
+              expandableRows
+              expandableRowDisabled={(row) => (row.childTask ? false : true)}
+              expandOnRowClicked
+              // expandableRowsHideExpander
+              expandableRowsComponent={ExpandedComponent}
+              pagination
+            />
+          </div>
+
+          {/* Modal here */}
+          <AddTask open={openAdd} close={!openAdd} />
         </section>
       </main>
     </div>

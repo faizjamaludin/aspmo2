@@ -29,12 +29,10 @@ function NameCell({ row }) {
 function DayDiff({ startDate, endDate }) {
   const start = startDate == null ? 0 : new Date(startDate);
   const end = endDate == null ? 0 : new Date(endDate);
-
-  console.log(end);
   const timeDiff = end - start;
   const daysDiff = timeDiff / (1000 * 3600 * 24);
 
-  return <p>{daysDiff}</p>;
+  return <p>{daysDiff + 1}</p>;
 }
 
 function StartEndDate({ date }) {
@@ -44,6 +42,87 @@ function StartEndDate({ date }) {
     return dateFormat(date, "dd-mmm-yy");
   }
 }
+
+export const ExpandedComponent = ({ data }) => {
+  return (
+    <div>
+      {data.childTask?.map((item, index) => {
+        console.log(item);
+        return (
+          <div
+            key={index}
+            className="flex flex-row w-full border-b border-gray-200 h-[2.5rem] items-center text-[0.75rem] bg-gray-100 pl-[3rem]"
+          >
+            <div className="px-[1rem] w-[20rem]">
+              <a href="" className="hover:text-purple-200">
+                {item.taskName}
+              </a>
+            </div>
+            <div className="px-[1rem] w-[10rem] ">
+              <p className="text-center">
+                {item.turnaroundDays == null ? "0" : item.turnaroundDays}
+              </p>
+            </div>
+            <div className="px-[1rem] w-[10rem]">
+              {" "}
+              <p className="text-center">
+                {item.totalTurnaroundDays == null
+                  ? "0"
+                  : item.totalTurnaroundDays}
+              </p>
+            </div>
+            <div className="px-[1rem] w-[8rem]">
+              <p className="text-center">
+                {item.plannedStartDate == null
+                  ? "-"
+                  : dateFormat(item.plannedStartDate, "dd-mmm-yy")}
+              </p>
+            </div>
+            <div className="px-[1rem] w-[8rem]">
+              <p className="text-center">
+                {item.plannedEndDate == null
+                  ? "-"
+                  : dateFormat(item.plannedEndDate, "dd-mmm-yy")}
+              </p>
+            </div>
+            <div className="px-[1rem] w-[10rem] ">
+              <p className="text-center">
+                {
+                  <DayDiff
+                    startDate={item.plannedStartDate}
+                    endDate={item.plannedEndDate}
+                  />
+                }
+              </p>
+            </div>
+            <div className="px-[1rem] w-[8rem]">
+              <p className="text-center">
+                {item.startDate == null
+                  ? "-"
+                  : dateFormat(item.startDate, "dd-mmm-yy")}
+              </p>
+            </div>
+            <div className="px-[1rem] w-[8rem]">
+              <p className="text-center">
+                {item.endDate == null
+                  ? "-"
+                  : dateFormat(item.endDate, "dd-mmm-yy")}
+              </p>
+            </div>
+            <div className="px-[1rem] w-[10rem]">
+              <p className="text-center">
+                {<DayDiff startDate={item.startDate} endDate={item.endDate} />}
+              </p>
+            </div>
+            <div className="px-[1rem] w-[8rem]">
+              <p className="text-center">{item.dayElapsed}</p>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
 
 export const projectTaskColumn = [
   {
@@ -91,7 +170,9 @@ export const projectTaskColumn = [
     ),
     selector: (row) => row.plannedStartDate,
     cell: (row) => <StartEndDate date={row.plannedStartDate} />,
+    width: "8rem",
     sortable: true,
+    center: true,
   },
   {
     name: (
@@ -102,7 +183,9 @@ export const projectTaskColumn = [
     ),
     selector: (row) => row.plannedEndDate,
     cell: (row) => <StartEndDate date={row.plannedEndDate} />,
+    width: "8rem",
     sortable: true,
+    center: true,
   },
   {
     name: (
@@ -111,7 +194,7 @@ export const projectTaskColumn = [
         Proposed Duration (days)
       </span>
     ),
-    selector: (row) => row.taskId,
+    selector: (row) => row.plannedEndDate,
     cell: (row) => (
       <DayDiff startDate={row.plannedStartDate} endDate={row.plannedEndDate} />
     ),
@@ -121,7 +204,7 @@ export const projectTaskColumn = [
   },
   {
     name: (
-      <span className="flex flex-row justify-center items-center gap-x-2">
+      <span className="flex flex-row justify-center items-start gap-x-2">
         <BiCalendarAlt size="1.3rem" />
         Actual Start
       </span>
@@ -129,10 +212,11 @@ export const projectTaskColumn = [
     selector: (row) => <StartEndDate date={row.startDate} />,
     center: true,
     sortable: true,
+    width: "8rem",
   },
   {
     name: (
-      <span className="flex flex-row justify-center items-center gap-x-2">
+      <span className="flex flex-row justify-center items-start gap-x-2">
         <BiCalendar size="1.3rem" />
         Actual End
       </span>
@@ -140,6 +224,7 @@ export const projectTaskColumn = [
     selector: (row) => <StartEndDate date={row.endDate} />,
     center: true,
     sortable: true,
+    width: "8rem",
   },
   {
     name: (
@@ -165,6 +250,7 @@ export const projectTaskColumn = [
     selector: (row) => row.dayElapsed,
     center: true,
     sortable: true,
+    width: "8rem",
   },
   {
     name: (
