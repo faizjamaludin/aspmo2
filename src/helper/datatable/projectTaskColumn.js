@@ -1,4 +1,9 @@
+import React, { useState } from "react";
 import dateFormat from "dateformat";
+import Tooltip from "@mui/material/Tooltip";
+import Avatar from "@mui/material/Avatar";
+import AvatarGroup from "@mui/material/AvatarGroup";
+import { TaskDetail } from "../../component";
 
 // icon
 import { HiBars3BottomLeft } from "react-icons/hi2";
@@ -15,14 +20,31 @@ import {
 } from "react-icons/bi";
 
 function NameCell({ row }) {
-  console.log(row);
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleRowClick = (rowData) => {
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
   return (
-    <a
-      href={`/project/task/${row.projectId}`}
-      className="text-h2 font-medium hover:text-purple-200"
-    >
-      {row.taskName}
-    </a>
+    <div className="">
+      <button
+        onClick={handleRowClick}
+        className="text-p text-start font-medium hover:text-purple-200"
+      >
+        {row.taskName}
+      </button>
+      {openModal && (
+        <TaskDetail
+          selectedData={row}
+          open={openModal}
+          closeModal={handleCloseModal}
+        />
+      )}
+    </div>
   );
 }
 
@@ -41,6 +63,25 @@ function StartEndDate({ date }) {
   } else {
     return dateFormat(date, "dd-mmm-yy");
   }
+}
+
+function AsigneeCell({ asignee }) {
+  // console.log(asignee);
+  return (
+    <AvatarGroup max={4}>
+      <Tooltip title={asignee}>
+        <Avatar
+          alt={asignee}
+          sx={{
+            width: "1.5rem",
+            height: "1.5rem",
+            borderColor: "#000000",
+            borderWidth: "1px",
+          }}
+        />
+      </Tooltip>
+    </AvatarGroup>
+  );
 }
 
 export const ExpandedComponent = ({ data }) => {
@@ -145,6 +186,7 @@ export const projectTaskColumn = [
       </span>
     ),
     selector: (row) => row.turnaroundDays,
+    cell: (row) => (row.turnaroundDays == null ? "-" : row.turnaroundDays),
     center: true,
     sortable: true,
     width: "10rem",
@@ -157,6 +199,8 @@ export const projectTaskColumn = [
       </span>
     ),
     selector: (row) => row.totalTurnaroundDays,
+    cell: (row) =>
+      row.totalTurnaroundDays == null ? "-" : row.totalTurnaroundDays,
     center: true,
     sortable: true,
     width: "10rem",
@@ -259,7 +303,8 @@ export const projectTaskColumn = [
         Asignee
       </span>
     ),
-    selector: (row) => row.projectName,
+    selector: (row) => row.reporter,
+    cell: (row) => <AsigneeCell asignee={row.reporter} />,
     sortable: true,
   },
   {

@@ -4,9 +4,9 @@ module.exports = {
   theme: {
     fontSize: {
       h1: ["1.5rem"],
-      h2: ["0.75rem"],
+      h2: ["0.875rem"],
       h3: ["0.7rem"],
-      p: ["0.875rem"],
+      p: ["0.75rem"],
     },
     colors: {
       white: "#FFFFFF",

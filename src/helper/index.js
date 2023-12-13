@@ -4,5 +4,12 @@ import {
   projectTaskColumn,
   ExpandedComponent,
 } from "./datatable/projectTaskColumn";
+import { submissionColumn } from "./datatable/submissionColumn";
 
-export { projectColumn, projectTaskColumn, DataTable, ExpandedComponent };
+export {
+  projectColumn,
+  projectTaskColumn,
+  submissionColumn,
+  DataTable,
+  ExpandedComponent,
+};

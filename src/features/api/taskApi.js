@@ -1,6 +1,7 @@
 import { pmoApi } from "./pmoApi";
 
 const taskApi = pmoApi.injectEndpoints({
+  tagTypes: ["Task"],
   endpoints: (builder) => ({
     getTaskByProjectId: builder.query({
       query: (projectId) => `/tasks?projectId=${projectId}`,
@@ -13,9 +14,22 @@ const taskApi = pmoApi.injectEndpoints({
       transformResponse: (response) => {
         return response.data;
       },
+      providesTags: ["Task"],
+    }),
+    addTask: builder.mutation({
+      query: (data) => ({
+        url: `/tasks`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Task"],
     }),
   }),
   overrideExisting: false,
 });
 
-export const { useGetTaskByProjectIdQuery, useGetTaskByTaskIdQuery } = taskApi;
+export const {
+  useGetTaskByProjectIdQuery,
+  useGetTaskByTaskIdQuery,
+  useAddTaskMutation,
+} = taskApi;

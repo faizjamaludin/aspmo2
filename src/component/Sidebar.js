@@ -48,7 +48,7 @@ function Sidebar() {
             key={key}
             to={item.route}
             className={({ isActive }) =>
-              `flex flex-row items-center gap-x-2 px-4 py-2  text-blue-300 text-h2 font-medium rounded-md hover:bg-purple-100 duration-100 ease-in-out ${
+              `flex flex-row items-center gap-x-2 px-4 py-2  text-blue-300 text-p font-medium rounded-md hover:bg-purple-100 duration-100 ease-in-out ${
                 isActive &&
                 "bg-purple-200 text-white hover:bg-purple-200 drop-shadow-purple-200"
               }`

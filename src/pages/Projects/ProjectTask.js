@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { DataTable, projectTaskColumn, ExpandedComponent } from "../../helper";
 import { useParams } from "react-router-dom";
 import { useGetTaskByProjectIdQuery } from "../../features/api/taskApi";
+import Popover from "@mui/material/Popover";
 
 // component
 import { Sidebar, AddTask } from "../../component";
@@ -19,6 +20,19 @@ function ProjectTask() {
   } = useGetTaskByProjectIdQuery(projectId);
 
   const [openAdd, setOpenAdd] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
+
+  useEffect(() => {}, [task]);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <div className="flex flex-row w-full">
@@ -40,10 +54,22 @@ function ProjectTask() {
             <div className="flex flex-row">
               <button
                 className="flex flex-row items-center w-fit px-2 py-1 gap-x-2 rounded-sm hover:bg-purple-100"
-                onClick={() => setOpenAdd(true)}
+                onClick={handleClick}
               >
                 <BiPlus /> <p className="text-[0.75rem]">Create</p>
               </button>
+              <Popover
+                id={id}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "left",
+                }}
+              >
+                <AddTask />
+              </Popover>
               <button className="flex flex-row items-center w-fit px-2 py-1 gap-x-2 rounded-sm hover:bg-purple-100">
                 <MdDownload />
                 <p className="text-[0.75rem]">Download</p>
@@ -69,9 +95,6 @@ function ProjectTask() {
               pagination
             />
           </div>
-
-          {/* Modal here */}
-          <AddTask open={openAdd} close={!openAdd} />
         </section>
       </main>
     </div>
