@@ -7,6 +7,7 @@ const projectApi = pmoApi.injectEndpoints({
       transformResponse: (response) => {
         return response.data;
       },
+      providesTags: ["Project"],
     }),
     getProjectByProjectId: builder.query({
       query: (projectId) => `/project?projectId=${projectId}`,
@@ -14,9 +15,28 @@ const projectApi = pmoApi.injectEndpoints({
         return response.result.data;
       },
     }),
+    addProject: builder.mutation({
+      query: (data) => ({
+        url: `/project`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Project"],
+    }),
+    deleteProject: builder.mutation({
+      query: (projectId) => ({
+        url: `/project?projectId=${projectId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Project"],
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useGetAllProjectQuery, useGetProjectByProjectIdQuery } =
-  projectApi;
+export const {
+  useGetAllProjectQuery,
+  useGetProjectByProjectIdQuery,
+  useAddProjectMutation,
+  useDeleteProjectMutation,
+} = projectApi;

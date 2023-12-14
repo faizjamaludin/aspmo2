@@ -24,8 +24,8 @@ const listNav = [
     icon: <FaMoneyCheckDollar size={18} />,
   },
   {
-    name: "Procurement",
-    route: "/procurement",
+    name: "Cost Tracking",
+    route: "/costtracking",
     icon: <BiSolidCart size={18} />,
   },
 ];

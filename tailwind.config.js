@@ -11,7 +11,7 @@ module.exports = {
     colors: {
       white: "#FFFFFF",
       gray: {
-        100: "#F7F8F9",
+        100: "#F3F4F6",
         200: "#DCDFE4",
         300: "#8F98A9",
       },
@@ -27,6 +27,9 @@ module.exports = {
       purple: {
         100: "#DCDAF8",
         200: "#5349DA",
+      },
+      red: {
+        300: "#DC2626",
       },
     },
     dropShadow: {

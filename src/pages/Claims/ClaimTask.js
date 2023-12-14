@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import {
   DataTable,
-  projectTaskColumn,
-  ProjectExpandedComponent,
+  useClaimTaskColumn,
+  ClaimExpandedComponent,
 } from "../../helper";
 import { useParams } from "react-router-dom";
 import { useGetTaskByProjectIdQuery } from "../../features/api/taskApi";
@@ -15,7 +15,7 @@ import { Sidebar, AddTask } from "../../component";
 import { BiPlus } from "react-icons/bi";
 import { MdDownload } from "react-icons/md";
 
-function ProjectTask() {
+function ClaimTask() {
   const { projectId } = useParams();
   const {
     data: task = [],
@@ -26,6 +26,7 @@ function ProjectTask() {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
+  const claimTaskColumn = useClaimTaskColumn();
 
   useEffect(() => {}, [task]);
 
@@ -36,7 +37,6 @@ function ProjectTask() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
   return (
     <div className="flex flex-row w-full">
       <nav className="w-[15rem] fixed">
@@ -48,36 +48,12 @@ function ProjectTask() {
         <header className="flex flex-row items-start justify-start gap-x-2">
           <img src="/img/icon/task.png" alt="" className="w-[2rem] h-[2rem]" />
           <div className="flex flex-col ">
-            <h1 className="text-h1 font-medium text-blue-300 ">Task</h1>
-            <p className="text-h2 text-gray-300">View and manage your task</p>
+            <h1 className="text-h1 font-medium text-blue-300 ">Claim</h1>
+            <p className="text-h2 text-gray-300">View and manage your claim</p>
           </div>
         </header>
         <section className="mt-10 mr-10">
-          <div className="flex flex-row justify-between mb-3">
-            <div className="flex flex-row gap-x-2">
-              <button
-                className="flex flex-row items-center w-fit px-2 py-1 gap-x-2 rounded-sm bg-gray-100 hover:bg-purple-100 duration-300"
-                onClick={handleClick}
-              >
-                <BiPlus /> <p className="text-p">Create</p>
-              </button>
-              <Popover
-                id={id}
-                open={open}
-                anchorEl={anchorEl}
-                onClose={handleClose}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "left",
-                }}
-              >
-                <AddTask />
-              </Popover>
-              <button className="flex flex-row items-center w-fit px-2 py-1 gap-x-2 rounded-sm bg-gray-100 hover:bg-purple-100 duration-300">
-                <MdDownload />
-                <p className="text-p">Download</p>
-              </button>
-            </div>
+          <div className="flex flex-row justify-end mb-3">
             <div>
               <input
                 type="text"
@@ -89,12 +65,12 @@ function ProjectTask() {
           <div className="border rounded-md">
             <DataTable
               data={task}
-              columns={projectTaskColumn}
+              columns={claimTaskColumn}
               expandableRows
               expandableRowDisabled={(row) => (row.childTask ? false : true)}
               expandOnRowClicked
               // expandableRowsHideExpander
-              expandableRowsComponent={ProjectExpandedComponent}
+              expandableRowsComponent={ClaimExpandedComponent}
               pagination
             />
           </div>
@@ -104,4 +80,4 @@ function ProjectTask() {
   );
 }
 
-export default ProjectTask;
+export default ClaimTask;

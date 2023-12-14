@@ -4,11 +4,12 @@ import Tooltip from "@mui/material/Tooltip";
 import Avatar from "@mui/material/Avatar";
 import AvatarGroup from "@mui/material/AvatarGroup";
 import { TaskDetail } from "../../component";
+import Popover from "@mui/material/Popover";
+import { useDeleteTaskMutation } from "../../features/api/taskApi";
 
 // icon
 import { HiBars3BottomLeft } from "react-icons/hi2";
 import {
-  BiHourglass,
   BiCalendarAlt,
   BiCalendar,
   BiAlarm,
@@ -17,6 +18,8 @@ import {
   BiFace,
   BiChart,
   BiCheckSquare,
+  BiDotsHorizontalRounded,
+  BiTrashAlt,
 } from "react-icons/bi";
 
 function NameCell({ row }) {
@@ -66,7 +69,6 @@ function StartEndDate({ date }) {
 }
 
 function AsigneeCell({ asignee }) {
-  // console.log(asignee);
   return (
     <AvatarGroup max={4}>
       <Tooltip title={asignee}>
@@ -84,11 +86,58 @@ function AsigneeCell({ asignee }) {
   );
 }
 
-export const ExpandedComponent = ({ data }) => {
+function OptionCell({ taskId }) {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [deleteTask, { isLoading, isSuccess }] = useDeleteTaskMutation();
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleDelete = async () => {
+    await deleteTask(taskId);
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
+  return (
+    <div>
+      <button onClick={handleClick}>
+        <BiDotsHorizontalRounded size={17} />
+      </button>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+      >
+        <div className="flex flex-col">
+          <button
+            type="button"
+            onClick={handleDelete}
+            className="flex flex-row justify-center items-center gap-x-2 duration-300 hover:bg-gray-200 p-3 text-red-300 cursor-pointer"
+          >
+            <BiTrashAlt size={17} /> <p className="text-p ">Delete</p>
+          </button>
+        </div>
+      </Popover>
+    </div>
+  );
+}
+
+export const ProjectExpandedComponent = ({ data }) => {
   return (
     <div>
       {data.childTask?.map((item, index) => {
-        console.log(item);
         return (
           <div
             key={index}
@@ -157,6 +206,14 @@ export const ExpandedComponent = ({ data }) => {
             </div>
             <div className="px-[1rem] w-[8rem]">
               <p className="text-center">{item.dayElapsed}</p>
+            </div>
+            <div className="px-[1rem] w-[8rem]">
+              <p className="flex items-start">
+                <AsigneeCell asignee={item.reporter} />
+              </p>
+            </div>
+            <div className="px-[1rem] w-[3rem]">
+              <OptionCell taskId={item.taskId} />
             </div>
           </div>
         );
@@ -305,11 +362,14 @@ export const projectTaskColumn = [
     ),
     selector: (row) => row.reporter,
     cell: (row) => <AsigneeCell asignee={row.reporter} />,
+    width: "8rem",
     sortable: true,
   },
   {
-    name: "Remark",
-    selector: (row) => row.projectName,
+    name: "",
+    selector: (row) => row.taskId,
+    cell: (row) => <OptionCell taskId={row.taskId} />,
     sortable: true,
+    width: "3rem",
   },
 ];

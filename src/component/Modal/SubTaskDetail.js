@@ -14,12 +14,13 @@ import { BiDetail } from "react-icons/bi";
 
 // component
 import { DataTable, useSubmissionColumn } from "../../helper";
-import { AddTask, SubTaskDetail } from "../../component";
+import { AddTask } from "../../component";
 
-function TaskDetail({ selectedData, open, closeModal }) {
+function SubTaskDetail({ selectedData, open, closeModal }) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [openModal, setOpenModal] = useState(false);
   const submissionColumn = useSubmissionColumn();
+
+  console.log(selectedData);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -29,18 +30,9 @@ function TaskDetail({ selectedData, open, closeModal }) {
     setAnchorEl(null);
   };
 
-  const handleOpenModal = (item) => {
-    setOpenModal(true);
-    setSelectedItem(item); // S
-  };
-  const handleCloseModal = () => {
-    setOpenModal(false);
-  };
-
   const dayDif = ({ startDate, endDate }) => {};
 
   const openCreate = Boolean(anchorEl);
-  const [selectedItem, setSelectedItem] = useState(null);
   const id = openCreate ? "simple-popover" : undefined;
   return (
     <Modal
@@ -59,7 +51,10 @@ function TaskDetail({ selectedData, open, closeModal }) {
                 className="w-[1.5rem] h-[1.5rem]"
               />
               <Breadcrumbs aria-label="breadcrumb">
-                <span className="text-p font-medium">Parent Task</span>
+                <button onClick={closeModal} className="text-p">
+                  Parent Task
+                </button>
+                <span className="text-p font-medium">Sub Task</span>
               </Breadcrumbs>
             </div>
             <div>
@@ -75,71 +70,17 @@ function TaskDetail({ selectedData, open, closeModal }) {
                   {selectedData.taskName}
                 </h1>
                 <div className="flex flex-row gap-x-2">
-                  <button
-                    onClick={handleClick}
-                    className="text-p flex flex-row gap-x-2 items-center bg-gray-100 hover:bg-gray-200 duration-300 px-2 py-1 rounded-sm"
-                  >
-                    <GoPlus />
-                    Sub Task
-                  </button>
-                  <Popover
-                    id={id}
-                    open={openCreate}
-                    anchorEl={anchorEl}
-                    onClose={handleClose}
-                    anchorOrigin={{
-                      vertical: "bottom",
-                      horizontal: "left",
-                    }}
-                  >
-                    <AddTask
-                      parentTaskId={selectedData.taskId}
-                      reporter={selectedData.reporter}
-                    />
-                  </Popover>
                   <button className="text-p flex flex-row gap-x-2 items-center bg-gray-100 hover:bg-gray-200 duration-300 px-2 py-1 rounded-sm">
                     <GrAttachment />
                     Submission
                   </button>
                 </div>
-                <div className="w-[50rem] mt-5">
-                  <h1 className="text-h2 font-medium">Submission</h1>
+                <div className="w-[50rem]">
                   <DataTable
                     columns={submissionColumn}
                     data={selectedData.submissions}
+                    pagination
                   />
-                </div>
-                <Divider
-                  variant="middle"
-                  sx={{ margin: "10px 0", width: "50rem" }}
-                />
-                <div className="flex flex-col w-[45rem]">
-                  <h1 className="text-h2 font-medium">Sub Task</h1>
-                  <div className="flex flex-col w-full mt-2 gap-y-px">
-                    {selectedData.childTask
-                      ? selectedData.childTask?.map((item, index) => (
-                          <div key={index}>
-                            <button
-                              onClick={() => handleOpenModal(item)}
-                              className="flex w-full flex-row border rounded-sm px-2 py-2 shadow-sm hover:shadow-md hover:bg-gray-100 duration-300 cursor-pointer"
-                            >
-                              <p className="text-p font-medium">
-                                {item.taskName}
-                              </p>
-                            </button>
-                            {openModal &&
-                              selectedItem &&
-                              selectedItem === item && (
-                                <SubTaskDetail
-                                  selectedData={selectedItem}
-                                  open={openModal}
-                                  closeModal={handleCloseModal}
-                                />
-                              )}
-                          </div>
-                        ))
-                      : "No Sub Task"}
-                  </div>
                 </div>
               </div>
             </div>
@@ -229,4 +170,4 @@ function TaskDetail({ selectedData, open, closeModal }) {
   );
 }
 
-export default TaskDetail;
+export default SubTaskDetail;

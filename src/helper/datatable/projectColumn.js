@@ -1,4 +1,9 @@
+import React, { useState } from "react";
 import dateFormat from "dateformat";
+import Popover from "@mui/material/Popover";
+import Tooltip from "@mui/material/Tooltip";
+import Avatar from "@mui/material/Avatar";
+import AvatarGroup from "@mui/material/AvatarGroup";
 
 // icon
 import { HiBars3BottomLeft } from "react-icons/hi2";
@@ -8,27 +13,38 @@ import {
   BiCalendar,
   BiAlarm,
   BiFace,
+  BiDotsHorizontalRounded,
+  BiTrashAlt,
 } from "react-icons/bi";
+import { useDeleteProjectMutation } from "../../features/api/projectApi";
 
 function NameCell({ row }) {
-  console.log(row);
   return (
     <a
       href={`/project/task/${row.projectId}`}
-      className="text-h2 font-medium hover:text-purple-200"
+      className="text-p font-medium hover:text-purple-200"
     >
       {row.projectName}
     </a>
   );
 }
 
-function Creator({ creator }) {
-  var newName = creator
-    .split(" ")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(" ");
-
-  return newName;
+function AsigneeCell({ asignee }) {
+  return (
+    <AvatarGroup max={4}>
+      <Tooltip title={asignee}>
+        <Avatar
+          alt={asignee}
+          sx={{
+            width: "1.5rem",
+            height: "1.5rem",
+            borderColor: "#000000",
+            borderWidth: "1px",
+          }}
+        />
+      </Tooltip>
+    </AvatarGroup>
+  );
 }
 
 function Status({ status }) {
@@ -46,6 +62,54 @@ function Status({ status }) {
     >
       {status}
     </span>
+  );
+}
+
+function OptionCell({ projectId }) {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [deleteProject, { isLoading, isSuccess }] = useDeleteProjectMutation();
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleDelete = async () => {
+    await deleteProject(projectId);
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
+  return (
+    <div>
+      <button onClick={handleClick}>
+        <BiDotsHorizontalRounded size={17} />
+      </button>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+      >
+        <div className="flex flex-col">
+          <button
+            type="button"
+            onClick={handleDelete}
+            className="flex flex-row justify-center items-center gap-x-2 duration-300 hover:bg-gray-200 p-3 text-red-300 cursor-pointer"
+          >
+            <BiTrashAlt size={17} /> <p className="text-p ">Delete</p>
+          </button>
+        </div>
+      </Popover>
+    </div>
   );
 }
 
@@ -140,8 +204,15 @@ export const projectColumn = [
       </span>
     ),
     selector: (row) => row.creator,
-    cell: (row) => <Creator creator={row.creator} />,
+    cell: (row) => <AsigneeCell asignee={row.creator} />,
     sortable: true,
     width: "15rem",
+  },
+  {
+    name: "",
+    selector: (row) => row.projectId,
+    cell: (row) => <OptionCell projectId={row.projectId} />,
+    sortable: true,
+    width: "3rem",
   },
 ];
