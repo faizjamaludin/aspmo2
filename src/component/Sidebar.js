@@ -18,16 +18,16 @@ const listNav = [
     route: "/projects",
     icon: <BiSolidPieChartAlt2 size={18} />,
   },
-  {
-    name: "Claims",
-    route: "/claims",
-    icon: <FaMoneyCheckDollar size={18} />,
-  },
-  {
-    name: "Cost Tracking",
-    route: "/costtracking",
-    icon: <BiSolidCart size={18} />,
-  },
+  // {
+  //   name: "Claims",
+  //   route: "/claims",
+  //   icon: <FaMoneyCheckDollar size={18} />,
+  // },
+  // {
+  //   name: "Cost Tracking",
+  //   route: "/costtracking",
+  //   icon: <BiSolidCart size={18} />,
+  // },
 ];
 
 function Sidebar() {

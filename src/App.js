@@ -3,11 +3,10 @@ import {
   Dashboard,
   Projects,
   ProjectTask,
+  ProjectWrapper,
   TesPage,
-  Claims,
   ClaimTask,
   CostTracking,
-  CostTrackingItem,
 } from "./pages";
 import "ag-grid-community/styles/ag-grid.css"; // Core CSS
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Theme
@@ -20,15 +19,10 @@ function App() {
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/projects" element={<Projects />} />
-        <Route path="/project/task/:projectId" element={<ProjectTask />} />
-        <Route path="/claims" element={<Claims />} />
+        <Route path="/project/:projectId" element={<ProjectWrapper />} />
+        {/* <Route path="/project/task/:projectId" element={<ProjectTask />} />
         <Route path="/claim/task/:projectId" element={<ClaimTask />} />
-        <Route path="/claim/task/:projectId" element={<ClaimTask />} />
-        <Route path="/costtracking" element={<CostTracking />} />
-        <Route
-          path="/costtracking/list/:projectId"
-          element={<CostTrackingItem />}
-        />
+        <Route path="/costtracking" element={<CostTracking />} /> */}
         <Route path="/test" element={<TesPage />} />
       </Routes>
     </BrowserRouter>

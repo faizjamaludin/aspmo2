@@ -21,7 +21,7 @@ import { useDeleteProjectMutation } from "../../features/api/projectApi";
 function NameCell({ row }) {
   return (
     <a
-      href={`/project/task/${row.projectId}`}
+      href={`/project/${row.projectId}`}
       className="text-p font-medium hover:text-purple-200"
     >
       {row.projectName}

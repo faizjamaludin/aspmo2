@@ -4,8 +4,28 @@ const costTrackingApi = pmoApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllBq: builder.query({
       query: () => `/bqs`,
-      transformResponse: (response) => {
+      transformResponse: (response, meta, arg) => {
         return response.data;
+      },
+      providesTags: ["Cost Tracking"],
+    }),
+    getBqByProjectId: builder.query({
+      query: () => `/bqs`,
+      transformResponse: (response, meta, arg) => {
+        const res = response.data;
+
+        console.log(res);
+        var projectId = arg;
+
+        res.map((item, index) => {
+          const bqProjectId = item.items.filter(
+            (data) => data.projectId == projectId
+          );
+
+          // console.log(bqProjectId);
+        });
+
+        // const bqData = response.data.filter((bq) => console.log(bq.items));
       },
       providesTags: ["Cost Tracking"],
     }),
@@ -14,10 +34,14 @@ const costTrackingApi = pmoApi.injectEndpoints({
       transformResponse: (response) => {
         return response.data;
       },
-      providesTags: ["Cost Tracking", bqId],
+      providesTags: ["Cost Tracking"],
     }),
   }),
   overrideExisting: false,
 });
 
-export const { useGetAllBqQuery, useGetBqByBqIdQuery } = costTrackingApi;
+export const {
+  useGetAllBqQuery,
+  useGetBqByProjectIdQuery,
+  useGetBqByBqIdQuery,
+} = costTrackingApi;

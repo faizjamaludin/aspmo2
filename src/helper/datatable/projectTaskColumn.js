@@ -227,7 +227,7 @@ export const projectTaskColumn = [
     name: (
       <span className="flex flex-row justify-center items-center gap-x-2">
         <HiBars3BottomLeft />
-        Project Name
+        Task Name
       </span>
     ),
     selector: (row) => row.taskName,
