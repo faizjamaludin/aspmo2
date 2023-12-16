@@ -80,10 +80,19 @@ function ProjectWrapper() {
             <h1 className="text-h1 font-medium text-blue-300 ">
               {projectData.projectName}
             </h1>
-            <p className="text-h2 text-gray-300">View and manage your task</p>
+            <p className="text-h2 text-gray-300">
+              View and manage your{" "}
+              {value == "1"
+                ? "task"
+                : value == "2"
+                ? "claim"
+                : value == "3"
+                ? "cost tracking"
+                : ""}
+            </p>
           </div>
         </header>
-        <section className="mt-10 mr-10">
+        <section className="mt-5 mr-10">
           <TabContext value={value}>
             <div className="border-b">
               <AntTabs

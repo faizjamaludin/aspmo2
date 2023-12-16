@@ -26,8 +26,15 @@ const taskApi = pmoApi.injectEndpoints({
     }),
     deleteTask: builder.mutation({
       query: (taskId) => ({
-        url: `tasks?taskId=${taskId}`,
+        url: `/tasks?taskId=${taskId}`,
         method: "DELETE",
+      }),
+    }),
+    editTask: builder.mutation({
+      query: (data) => ({
+        url: `/tasks`,
+        method: "PUT",
+        body: data,
       }),
     }),
   }),
@@ -39,4 +46,5 @@ export const {
   useGetTaskByTaskIdQuery,
   useAddTaskMutation,
   useDeleteTaskMutation,
+  useEditTaskMutation,
 } = taskApi;

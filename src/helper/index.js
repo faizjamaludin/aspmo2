@@ -9,6 +9,10 @@ import {
   useClaimTaskColumn,
   ClaimExpandedComponent,
 } from "./datatable/claimTaskColumn";
+import {
+  useCostTracking,
+  CostExpandedComponent,
+} from "./datatable/costTrackingColumn";
 
 export {
   projectColumn,
@@ -18,4 +22,6 @@ export {
   DataTable,
   ProjectExpandedComponent,
   ClaimExpandedComponent,
+  useCostTracking,
+  CostExpandedComponent,
 };

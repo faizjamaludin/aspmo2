@@ -7,7 +7,6 @@ function HandleDate({ date }) {
 }
 
 function FileName({ attachments }) {
-  console.log(attachments);
   return (
     <div className="flex flex-col">
       {attachments.map((item, index) => (
